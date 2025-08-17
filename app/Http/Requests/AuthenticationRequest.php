@@ -11,7 +11,7 @@ class AuthenticationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,9 +22,9 @@ class AuthenticationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required_without:phone,username|email',
-            'phone' => 'required_without:email,username',
-            'username' => 'required_without:email,phone',
+            'email' => 'nullable|email|required_without_all:phone,username',
+            'phone' => 'nullable|required_without_all:email,username',
+            'username' => 'nullable|required_without_all:email,phone',
             'password' => 'required|string|min:8',
         ];
     }
