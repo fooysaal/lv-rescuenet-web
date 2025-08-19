@@ -7,13 +7,20 @@ use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\AuthenticationRequest;
+use App\Http\Controllers\Api\BaseController;
 use Illuminate\Http\JsonResponse as JsonResponse;
 
 class AuthenticationController extends BaseController
 {
-    public function login(AuthenticationRequest $request): JsonResponse
+    public function login(Request $request): JsonResponse
     {
+        if(empty($request->email) && empty($request->phone) && empty($request->username)) {
+            return $this->sendError(
+                'Validation Error.',
+                ['identifier' => ['At least one of email, phone, or username is required.']]
+            );
+        }
+
         $user = User::where('email', $request->email)
             ->orWhere('phone', $request->phone)
             ->orWhere('username', $request->username)
@@ -35,7 +42,7 @@ class AuthenticationController extends BaseController
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|unique:users,email',
-            'phone' => 'nullable|unique:users,phone',
+            'phone' => 'nullable|min:11|unique:users,phone',
             'username' => 'required|unique:users,username',
             'password' => 'required|string|min:8',
             'gender' => 'required|string|in:male,female,other',
@@ -49,7 +56,7 @@ class AuthenticationController extends BaseController
         if (empty($request->email) && empty($request->phone)) {
             return $this->sendError(
             'Validation Error.',
-            ['identifier' => ['At least one of email, phone, or username is required.']]
+            ['identifier' => ['At least one of email or phone is required.']]
             );
         }
 
