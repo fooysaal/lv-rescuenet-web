@@ -44,7 +44,7 @@ class AuthenticationController extends BaseController
             'email' => 'nullable|email|unique:users,email',
             'phone' => 'nullable|min:11|unique:users,phone',
             'username' => 'required|unique:users,username',
-            'password' => 'required|string|min:8',
+            'password' => 'required|string|min:6|confirmed',
             'gender' => 'required|string|in:male,female,other',
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);

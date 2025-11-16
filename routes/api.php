@@ -16,7 +16,7 @@ Route::get('/test', function () {
 Route::controller(AuthenticationController::class)->group(function () {
     Route::post('/login', 'login');
     Route::post('/register', 'register');
-    Route::post('/logout', 'logout');
+    Route::post('/logout', 'logout')->middleware('auth:sanctum');
 });
 
 Route::middleware('auth:sanctum')->group(function () {
