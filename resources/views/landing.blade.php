@@ -113,21 +113,22 @@
         .shadow-modern-lg {
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         }
-        
+
         /* Language toggle animation */
         .lang-hidden {
             display: none;
         }
-        
+
         .lang-fade {
             animation: fadeIn 0.3s ease-in;
         }
-        
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
                 transform: translateY(-5px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -173,7 +174,8 @@
                     </div>
                 </div>
                 <div class="hidden lg:flex items-center gap-3">
-                    <button id="langToggle" class="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-blue-600 transition hover:bg-blue-50 rounded-lg">
+                    <button id="langToggle"
+                        class="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-blue-600 transition hover:bg-blue-50 rounded-lg">
                         <span id="langText" class="font-bangla">বাংলা</span> / <span id="langTextEn">EN</span>
                     </button>
                     <a href="#download"
@@ -217,7 +219,8 @@
                     App</a>
                 <button id="langToggleMobile"
                     class="w-full px-4 py-3 text-base font-semibold text-gray-700 hover:bg-blue-50 rounded-xl transition text-center">
-                    <span id="langTextMobile" class="font-bangla">বাংলা</span> / <span id="langTextEnMobile">English</span>
+                    <span id="langTextMobile" class="font-bangla">বাংলা</span> / <span
+                        id="langTextEnMobile">English</span>
                 </button>
             </div>
         </div>
@@ -249,9 +252,12 @@
                                 class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                             <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                         </span>
-                        <span class="lang-en bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">Disaster
+                        <span
+                            class="lang-en bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">Disaster
                             Response Platform</span>
-                        <span class="lang-bn lang-hidden font-bangla bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">দুর্যোগ মোকাবেলা প্ল্যাটফর্ম</span>
+                        <span
+                            class="lang-bn lang-hidden font-bangla bg-gradient-to-r from-red-600 to-orange-600 bg-clip-text text-transparent">দুর্যোগ
+                            মোকাবেলা প্ল্যাটফর্ম</span>
                     </div>
 
                     <div>
@@ -259,7 +265,7 @@
                             <span class="lang-en block">Stay Safe.</span>
                             <span class="lang-en block">Stay Informed.</span>
                             <span class="lang-en block gradient-text">Stay Connected.</span>
-                            
+
                             <span class="lang-bn lang-hidden block font-bangla">নিরাপদ থাকুন।</span>
                             <span class="lang-bn lang-hidden block font-bangla">সচেতন থাকুন।</span>
                             <span class="lang-bn lang-hidden block gradient-text font-bangla">সংযুক্ত থাকুন।</span>
@@ -304,17 +310,22 @@
                                 <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
                             </span>
                             <span class="lang-en text-sm font-semibold text-gray-700">Real-time Alerts</span>
-                            <span class="lang-bn lang-hidden text-sm font-semibold text-gray-700 font-bangla">রিয়েল-টাইম সতর্কতা</span>
+                            <span
+                                class="lang-bn lang-hidden text-sm font-semibold text-gray-700 font-bangla">রিয়েল-টাইম
+                                সতর্কতা</span>
                         </div>
                         <div class="flex items-center gap-2 px-4 py-2 glass rounded-lg">
                             <span class="text-green-500 text-lg">✓</span>
                             <span class="lang-en text-sm font-semibold text-gray-700">Free & Open Source</span>
-                            <span class="lang-bn lang-hidden text-sm font-semibold text-gray-700 font-bangla">বিনামূল্যে ও ওপেন সোর্স</span>
+                            <span
+                                class="lang-bn lang-hidden text-sm font-semibold text-gray-700 font-bangla">বিনামূল্যে
+                                ও ওপেন সোর্স</span>
                         </div>
                         <div class="flex items-center gap-2 px-4 py-2 glass rounded-lg">
                             <span class="text-blue-500 text-lg">🌍</span>
                             <span class="lang-en text-sm font-semibold text-gray-700">Bangla Support</span>
-                            <span class="lang-bn lang-hidden text-sm font-semibold text-gray-700 font-bangla">বাংলা সমর্থন</span>
+                            <span class="lang-bn lang-hidden text-sm font-semibold text-gray-700 font-bangla">বাংলা
+                                সমর্থন</span>
                         </div>
                     </div>
                 </div>
@@ -327,7 +338,8 @@
                             <div class="relative text-center p-8">
                                 <div class="text-8xl mb-4 animate-pulse">📱</div>
                                 <p class="lang-en text-white text-xl font-bold">Mobile App Preview</p>
-                                <p class="lang-bn lang-hidden text-white text-xl font-bold font-bangla">মোবাইল অ্যাপ প্রিভিউ</p>
+                                <p class="lang-bn lang-hidden text-white text-xl font-bold font-bangla">মোবাইল অ্যাপ
+                                    প্রিভিউ</p>
                                 <p class="lang-en text-white/80 text-sm mt-2">Coming Soon</p>
                                 <p class="lang-bn lang-hidden text-white/80 text-sm mt-2 font-bangla">শীঘ্রই আসছে</p>
                             </div>
