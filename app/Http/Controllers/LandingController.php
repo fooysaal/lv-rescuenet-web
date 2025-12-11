@@ -11,14 +11,6 @@ class LandingController extends Controller
      */
     public function index()
     {
-        return view('landing');
-    }
-
-    /**
-     * Display the about page.
-     */
-    public function about()
-    {
-        return view('about');
+        return view('layouts.pages.landing');
     }
 }
