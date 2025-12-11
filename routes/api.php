@@ -12,16 +12,17 @@ use App\Http\Controllers\Api\AuthenticationController;
 Route::get('/test', function () {
     return response()->json(['message' => 'API is working']);
 });
+Route::prefix('v1')->group(function () {
+    Route::controller(AuthenticationController::class)->group(function () {
+        Route::post('/login', 'login');
+        Route::post('/register', 'register');
+        Route::post('/logout', 'logout')->middleware('auth:sanctum');
+    });
 
-Route::controller(AuthenticationController::class)->group(function () {
-    Route::post('/login', 'login');
-    Route::post('/register', 'register');
-    Route::post('/logout', 'logout')->middleware('auth:sanctum');
-});
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::controller(UserInfoController::class)->group(function () {
-        Route::get('/profile', 'profile');
-        // Route::put('/profile', 'updateProfile');
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::controller(UserInfoController::class)->group(function () {
+            Route::get('/profile', 'profile');
+            // Route::put('/profile', 'updateProfile');
+        });
     });
 });
