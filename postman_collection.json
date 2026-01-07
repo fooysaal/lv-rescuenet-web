@@ -1,0 +1,182 @@
+{
+    "info": {
+        "name": "RescueNet Registration API",
+        "description": "Multi-step registration workflow for RescueNet application",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Registration Workflow",
+            "item": [
+                {
+                    "name": "Step 1 - Basic Info",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"John Doe\",\n  \"gender\": \"male\",\n  \"phone\": \"01712345678\",\n  \"email\": \"john@example.com\",\n  \"password\": \"SecurePass123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/register/step1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "v1", "register", "step1"]
+                        },
+                        "description": "Create user with basic information. Returns user_id, registration_token, and auth_token."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Step 2 - Upload NID Images",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "user_id",
+                                    "value": "1",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "registration_token",
+                                    "value": "your_token_here",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "nid_front_image",
+                                    "type": "file",
+                                    "src": []
+                                },
+                                {
+                                    "key": "nid_back_image",
+                                    "type": "file",
+                                    "src": []
+                                },
+                                {
+                                    "key": "selfie_with_nid_image",
+                                    "type": "file",
+                                    "src": []
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/register/step2",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "v1", "register", "step2"]
+                        },
+                        "description": "Upload NID verification images. This step is optional."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Skip Step 2",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"user_id\": 1,\n  \"registration_token\": \"your_token_here\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/register/skip-step2",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "v1", "register", "skip-step2"]
+                        },
+                        "description": "Skip NID verification step and proceed to Step 3."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Step 3 - Location & Complete",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"user_id\": 1,\n  \"registration_token\": \"your_token_here\",\n  \"latitude\": 23.8103,\n  \"longitude\": 90.4125,\n  \"location\": \"Dhaka, Bangladesh\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/register/step3",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "v1", "register", "step3"]
+                        },
+                        "description": "Add location data and complete registration."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Registration Status",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/register/status?user_id=1",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "v1", "register", "status"],
+                            "query": [
+                                {
+                                    "key": "user_id",
+                                    "value": "1"
+                                }
+                            ]
+                        },
+                        "description": "Check current registration status and progress."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Authentication (Legacy)",
+            "item": [
+                {
+                    "name": "Login",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"phone\": \"01712345678\",\n  \"password\": \"SecurePass123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/login",
+                            "host": ["{{base_url}}"],
+                            "path": ["api", "v1", "login"]
+                        },
+                        "description": "Login with phone and password after registration is complete."
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost",
+            "type": "string"
+        }
+    ]
+}

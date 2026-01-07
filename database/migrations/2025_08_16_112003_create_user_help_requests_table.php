@@ -15,22 +15,17 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
 
-            $table->enum('type', ['police', 'fire', 'ambulance', 'volunteer']);
+            $table->enum('type', ['police', 'fire', 'ambulance', 'volunteer', 'other']);
             $table->text('description');
 
             $table->double('latitude', 10, 6);
             $table->double('longitude', 10, 6);
-
-            $table->unsignedBigInteger('division_id');
-            $table->unsignedBigInteger('district_id')->nullable();
-
+            $table->string('location_name')->nullable();
             $table->enum('status', ['pending', 'in_progress', 'resolved', 'cancelled'])->default('pending');
 
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('division_id')->references('id')->on('state_divisions')->onDelete('cascade');
-            $table->foreign('district_id')->references('id')->on('districts')->onDelete('cascade');
         });
     }
 
