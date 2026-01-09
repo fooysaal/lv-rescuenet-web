@@ -8,9 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules\Password;
 use App\Http\Requests\RegistrationStep1Request;
 use App\Http\Requests\RegistrationStep2Request;
 use App\Http\Requests\RegistrationStep3Request;
@@ -121,12 +119,15 @@ class RegistrationController extends Controller
 
             if(!empty($uploadedFiles)) {
                 $userInfo->nid_verification_status = 'verified';
+                // update user role to volunteer
+                $user->role = 'volunteer';
+                $user->update();
             }
 
             // Update user registration status
             $user->registration_status = 'step2_completed';
             $user->current_registration_step = 3;
-            $user->save();
+            $user->update();
 
             $userInfo->save();
 
@@ -189,7 +190,7 @@ class RegistrationController extends Controller
             $user->registration_completed_at = now();
             $user->registration_token = null; // Clear token after completion
             $user->registration_token_expires_at = null;
-            $user->save();
+            $user->update();
 
             // Save emergency contact
             $user->emergencyContacts()->create([

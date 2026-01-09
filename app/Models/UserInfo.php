@@ -66,6 +66,6 @@ class UserInfo extends Model
      */
     public function hasNIDImages(): bool
     {
-        return !empty($this->nid_front_image) && !empty($this->nid_back_image);
+        return !empty($this->nid_front_image) && !empty($this->selfie_with_nid_image);
     }
 }

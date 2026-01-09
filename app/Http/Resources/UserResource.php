@@ -17,7 +17,7 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'role' => User::where('id', $this->id)->value('role'),
+            'is_verified' => $this->isVerified(),
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,

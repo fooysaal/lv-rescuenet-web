@@ -35,7 +35,8 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::controller(UserInfoController::class)->group(function () {
             Route::get('/profile', 'profile');
-            // Route::put('/profile', 'updateProfile');
+            Route::put('/profile', 'updateProfile');
+            Route::put('/update-password', 'updatePassword');
         });
         // User dashboard route
         Route::get('/dashboard', DashboardController::class);
