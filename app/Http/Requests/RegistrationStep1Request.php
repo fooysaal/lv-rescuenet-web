@@ -25,8 +25,8 @@ class RegistrationStep1Request extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'gender' => ['required', 'in:male,female,other'],
-            'phone' => ['required_without:email', 'string', 'unique:users,phone', 'regex:/^[0-9]{10,15}$/'],
-            'email' => ['required_without:phone', 'email', 'unique:users,email'],
+            'phone' => ['required', 'string', 'unique:users,phone', 'regex:/^[0-9]{10,15}$/'],
+            'email' => ['nullable', 'email', 'unique:users,email'],
             'password' => ['required', 'confirmed', 'min:6'],
         ];
     }

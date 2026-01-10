@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\HelpRequestsResource;
 use App\Models\UserHelpRequest;
-use PHPUnit\Metadata\Uses;
 
 class DashboardController extends Controller
 {
@@ -19,8 +18,8 @@ class DashboardController extends Controller
         $user = $request->user();
 
         $request->validate([
-            'latitude' => 'nullable|numeric',
-            'longitude' => 'nullable|numeric',
+            'latitude' => 'nullable',
+            'longitude' => 'nullable',
         ]);
 
         $lat = $request->query('latitude');
@@ -39,8 +38,10 @@ class DashboardController extends Controller
                 [$lat, $lng, $lat]
             )
             ->where('status', 'pending')
+            ->where('user_id', '!=', $user->id)
             ->orderBy('distance', 'asc')       // closest first
             ->orderBy('created_at', 'desc')    // newest first
+            ->with('user')
             ->get();
 
         return response()->json([

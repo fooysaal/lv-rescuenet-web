@@ -37,6 +37,7 @@ Route::prefix('v1')->group(function () {
             Route::get('/profile', 'profile');
             Route::put('/profile', 'updateProfile');
             Route::put('/update-password', 'updatePassword');
+            Route::post('/verify-profile', 'verifyProfile');
         });
         // User dashboard route
         Route::get('/dashboard', DashboardController::class);

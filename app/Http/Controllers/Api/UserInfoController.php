@@ -18,6 +18,34 @@ class UserInfoController extends BaseController
     public function updateProfile(Request $request): JsonResponse
     {
         $user = $request->user();
+        $data = $request->only(['name', 'email', 'phone', 'username', 'profile_picture']);
+        $request->validate([
+                    'name' => 'sometimes|string|max:255',
+                    'email' => 'sometimes|email|unique:users,email,' . $user->id,
+                    'phone' => 'sometimes|string|max:20',
+                    'username' => 'sometimes|string|max:255|unique:users,username,' . $user->id,
+                    'profile_picture' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
+                ]);
+
+        // If profile picture is being updated
+        if ($request->hasFile('profile_picture')) {
+            $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+            $data['profile_picture'] = $path;
+        }
+        $user->update($data);
+
+        return $this->sendResponse(new UserResource($user), 'User updated successfully.');
+    }
+
+    public function verifyProfile(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        $userInfo = $user->userInfo;
+        if (!$userInfo) {
+            return $this->sendError('User info not found.', [], 404);
+        }
+
         // check if request body has nidfront
         $userInfo = $user->userInfo;
         $uploadedFiles = [];
@@ -47,9 +75,11 @@ class UserInfoController extends BaseController
             $user->role = 'volunteer';
             $user->update();
             $userInfo->update();
+        } else {
+            return $this->sendError('No files uploaded for verification.', [], 400);
         }
 
-        return $this->sendResponse(new UserResource($user), 'User updated successfully.');
+        return $this->sendResponse(new UserResource($user), 'User profile verified successfully.');
     }
 
     public function updatePassword(Request $request): JsonResponse
