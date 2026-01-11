@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\HelpRequestsResource;
 use App\Models\UserHelpRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\DashboardHelpRequestsResource;
 
 class DashboardController extends Controller
 {
@@ -53,7 +53,7 @@ class DashboardController extends Controller
                     'is_verified' => $user->isVerified(),
                     'has_emergency_contact' => $user->haveEmergencyContacts(),
                 ],
-                'help_requests' => HelpRequestsResource::collection($helpRequests),
+                'help_requests' => DashboardHelpRequestsResource::collection($helpRequests),
             ],
         ]);
     }

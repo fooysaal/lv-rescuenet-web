@@ -100,19 +100,22 @@ class RegistrationController extends Controller
 
             // Upload NID images if provided
             if ($request->hasFile('nid_front_image')) {
-                $path = $request->file('nid_front_image')->store('nid/front', 'public');
+                $fileName = $user->id . '-front.' . $request->file('nid_front_image')->getClientOriginalExtension();
+                $path = $request->file('nid_front_image')->storeAs('nid/front', $fileName, 'public');
                 $userInfo->nid_front_image = $path;
                 $uploadedFiles[] = 'nid_front_image';
             }
 
             if ($request->hasFile('nid_back_image')) {
-                $path = $request->file('nid_back_image')->store('nid/back', 'public');
+                $fileName = $user->id . '-back.' . $request->file('nid_back_image')->getClientOriginalExtension();
+                $path = $request->file('nid_back_image')->storeAs('nid/back', $fileName, 'public');
                 $userInfo->nid_back_image = $path;
                 $uploadedFiles[] = 'nid_back_image';
             }
 
             if ($request->hasFile('selfie_with_nid_image')) {
-                $path = $request->file('selfie_with_nid_image')->store('nid/selfie', 'public');
+                $fileName = $user->id . '-selfie.' . $request->file('selfie_with_nid_image')->getClientOriginalExtension();
+                $path = $request->file('selfie_with_nid_image')->storeAs('nid/selfie', $fileName, 'public');
                 $userInfo->selfie_with_nid_image = $path;
                 $uploadedFiles[] = 'selfie_with_nid_image';
             }

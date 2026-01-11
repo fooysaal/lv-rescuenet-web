@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserInfoController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\HelpRequestsController;
 use App\Http\Controllers\Api\RegistrationController;
 use App\Http\Controllers\Api\AuthenticationController;
 
@@ -41,6 +42,9 @@ Route::prefix('v1')->group(function () {
         });
         // User dashboard route
         Route::get('/dashboard', DashboardController::class);
+
+        // Additional authenticated routes can be added here
+        Route::apiResource('help-requests', HelpRequestsController::class)->except(['create', 'edit']);
     });
 
 });

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
 
-            $table->enum('type', ['police', 'fire', 'ambulance', 'volunteer', 'other']);
+            $table->string('type');
             $table->text('description');
 
             $table->double('latitude', 10, 6);
