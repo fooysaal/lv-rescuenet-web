@@ -17,6 +17,9 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
+        // check user role
+        $userRole = $user->role;
+
         $request->validate([
             'latitude' => 'nullable',
             'longitude' => 'nullable',
@@ -28,17 +31,29 @@ class DashboardController extends Controller
         // Haversine formula (distance in KM)
         $helpRequests = UserHelpRequest::select('*')
             ->selectRaw(
-                "(6371 * acos(
-                    cos(radians(?)) *
-                    cos(radians(latitude)) *
-                    cos(radians(longitude) - radians(?) ) +
-                    sin(radians(?)) *
-                    sin(radians(latitude))
-                )) AS distance",
-                [$lat, $lng, $lat]
+            "(6371 * acos(
+                cos(radians(?)) *
+                cos(radians(latitude)) *
+                cos(radians(longitude) - radians(?) ) +
+                sin(radians(?)) *
+                sin(radians(latitude))
+            )) AS distance",
+            [$lat, $lng, $lat]
             )
             ->where('status', 'pending')
             ->where('user_id', '!=', $user->id)
+            ->when($userRole === 'police', function ($query) {
+                return $query->where('type', 'Police');
+            })
+            ->when($userRole === 'fire fighter', function ($query) {
+                return $query->where('type', 'Fire');
+            })
+            ->when($userRole === 'ambulance service', function ($query) {
+                return $query->whereIn('type', ['Ambulance', 'Medical']);
+            })
+            ->when(!in_array($userRole, ['police', 'fire fighter', 'ambulance service']), function ($query) {
+                return $query->whereNotIn('type', ['Police', 'Fire', 'Ambulance', 'Medical']);
+            })
             ->orderBy('distance', 'asc')       // closest first
             ->orderBy('created_at', 'desc')    // newest first
             ->with('user')
@@ -47,12 +62,6 @@ class DashboardController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                'user' => [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'is_verified' => $user->isVerified(),
-                    'has_emergency_contact' => $user->haveEmergencyContacts(),
-                ],
                 'help_requests' => DashboardHelpRequestsResource::collection($helpRequests),
             ],
         ]);
