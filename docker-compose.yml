@@ -43,22 +43,38 @@ services:
       - rescuenet_network
 
   # MySQL Database
-#   db:
-#     image: mysql:8.0
-#     container_name: rescuenet_db
-#     restart: unless-stopped
-#     environment:
-#       MYSQL_DATABASE: ${DB_DATABASE:-rescuenet}
-#       MYSQL_USER: ${DB_USERNAME:-rescuenet}
-#       MYSQL_PASSWORD: ${DB_PASSWORD:-rescuenet}
-#       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpass}
-#     ports:
-#       - "3306:3306"
-#     volumes:
-#       - mysql_data:/var/lib/mysql
-#       - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
-#     networks:
-#       - rescuenet_network
+  db:
+    image: mysql:8.0
+    container_name: rescuenet_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-rescuenet}
+      MYSQL_USER: ${DB_USERNAME:-rescuenet}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-rescuenet}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpass}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - rescuenet_network
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: rescuenet_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: ${DB_USERNAME:-rescuenet}
+      PMA_PASSWORD: ${DB_PASSWORD:-rescuenet}
+    ports:
+      - "8776:80"
+    depends_on:
+      - db
+    networks:
+      - rescuenet_network
 
   # Redis (for caching and queues)
   redis:
