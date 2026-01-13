@@ -31,14 +31,14 @@ class DashboardController extends Controller
         // Haversine formula (distance in KM)
         $helpRequests = UserHelpRequest::select('*')
             ->selectRaw(
-            "(6371 * acos(
+                "(6371 * acos(
                 cos(radians(?)) *
                 cos(radians(latitude)) *
                 cos(radians(longitude) - radians(?) ) +
                 sin(radians(?)) *
                 sin(radians(latitude))
             )) AS distance",
-            [$lat, $lng, $lat]
+                [$lat, $lng, $lat]
             )
             ->where('status', 'pending')
             ->where('user_id', '!=', $user->id)
@@ -61,6 +61,12 @@ class DashboardController extends Controller
 
         return response()->json([
             'success' => true,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'is_verified' => $user->isVerified(),
+                'has_emergency_contact' => $user->haveEmergencyContacts(),
+            ],
             'data' => [
                 'help_requests' => DashboardHelpRequestsResource::collection($helpRequests),
             ],
