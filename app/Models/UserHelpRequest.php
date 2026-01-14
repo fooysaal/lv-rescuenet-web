@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\UserHelpRequestLog;
 use Illuminate\Database\Eloquent\Model;
 
 class UserHelpRequest extends Model
@@ -24,5 +25,10 @@ class UserHelpRequest extends Model
     public function files()
     {
         return $this->hasMany(UserHelpRequestAttachment::class, 'help_request_id');
+    }
+
+    public function requestLogs()
+    {
+        return $this->hasMany(UserHelpRequestLog::class, 'help_request_id');
     }
 }

@@ -64,6 +64,7 @@ class DashboardController extends Controller
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
+                'role' => $user->role,
                 'is_verified' => $user->isVerified(),
                 'has_emergency_contact' => $user->haveEmergencyContacts(),
             ],
