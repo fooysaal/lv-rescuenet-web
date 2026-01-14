@@ -127,4 +127,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserHelpRequest::class);
     }
+
+    /**
+     * Get the user's device tokens.
+     */
+    public function deviceTokens()
+    {
+        return $this->hasMany(DeviceToken::class);
+    }
+
+    /**
+     * Get the user's notifications.
+     */
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
 }

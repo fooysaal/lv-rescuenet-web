@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('help_request_id');
             $table->unsignedBigInteger('performed_by')->nullable(); // admin/volunteer
             $table->text('note')->nullable();
-            $table->enum('action', ['requested', 'assigned', 'in_progress', 'resolved', 'cancelled']);
+            $table->string('action');
             $table->timestamps();
 
             $table->foreign('help_request_id')->references('id')->on('user_help_requests')->onDelete('cascade');

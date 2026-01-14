@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\HelpRequestsController;
 use App\Http\Controllers\Api\RegistrationController;
 use App\Http\Controllers\Api\AuthenticationController;
+use App\Http\Controllers\Api\DeviceTokenController;
+use App\Http\Controllers\Api\NotificationController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -45,6 +47,19 @@ Route::prefix('v1')->group(function () {
 
         // Additional authenticated routes can be added here
         Route::apiResource('help-requests', HelpRequestsController::class)->except(['create', 'edit']);
-    });
+        Route::post('help-requests/{help_request}/respond', [HelpRequestsController::class, 'responds']);
 
+        // Device token management routes
+        Route::apiResource('device-tokens', DeviceTokenController::class)->except(['create', 'edit']);
+        Route::post('device-tokens/deactivate', [DeviceTokenController::class, 'deactivate']);
+
+        // Notification routes
+        Route::get('notifications', [NotificationController::class, 'index']);
+        Route::get('notifications/unread-count', [NotificationController::class, 'unreadCount']);
+        Route::post('notifications/mark-all-read', [NotificationController::class, 'markAllAsRead']);
+        Route::delete('notifications/delete-all', [NotificationController::class, 'destroyAll']);
+        Route::get('notifications/{id}', [NotificationController::class, 'show']);
+        Route::post('notifications/{id}/mark-read', [NotificationController::class, 'markAsRead']);
+        Route::delete('notifications/{id}', [NotificationController::class, 'destroy']);
+    });
 });

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\HelpRequestsResource;
 use App\Models\UserHelpRequest;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Services\NotificationService;
+use App\Http\Resources\HelpRequestsResource;
 
 class HelpRequestsController extends Controller
 {
@@ -90,9 +92,7 @@ class HelpRequestsController extends Controller
      */
     public function show(string $id)
     {
-        $user = auth()->user();
-
-        $helpRequest = $user->helpRequests()->with('files')->findOrFail($id);
+        $helpRequest = UserHelpRequest::with('files', 'user', 'requestLogs')->findOrFail($id);
 
         return response()->json([
             'success' => true,
@@ -114,7 +114,38 @@ class HelpRequestsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user = auth()->user();
+        $helpRequest = UserHelpRequest::findOrFail($id);
+
+        // check if the help request belongs to the authenticated user
+        if ($helpRequest->user_id !== $user->id) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You are not authorized to update this help request.',
+            ], 403);
+        }
+
+        // Only allow updating if the help request is still pending
+        if ($helpRequest->status !== 'pending') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Cannot update a help request that has already been responded to.',
+            ], 400);
+        }
+
+        // just update the status either resolved or cancelled
+        $request->validate([
+            'status' => 'required|in:resolved,cancelled',
+        ]);
+
+        $helpRequest->status = $request->status;
+        $helpRequest->update();
+
+        return response()->json([
+            'success' => true,
+            'data' => new HelpRequestsResource($helpRequest),
+            'message' => 'Help request updated successfully',
+        ]);
     }
 
     /**
@@ -123,5 +154,45 @@ class HelpRequestsController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function responds(Request $request, string $id)
+    {
+        $request->validate([
+            'action' => 'required|string',
+            'note' => 'nullable|string',
+        ]);
+
+        DB::transaction(function () use ($request, $id) {
+            $user = auth()->user();
+
+            $helpRequest = UserHelpRequest::findOrFail($id);
+
+            if ($helpRequest->status !== 'pending') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'This help request has already been responded to.',
+                ], 400);
+            }
+
+            // Log the response action
+            $helpRequest->requestLogs()->create([
+                'performed_by' => $user->id,
+                'action' => $request->action,
+                'note' => $request->note,
+                'created_at' => now(),
+            ]);
+
+            NotificationService::notifyRequester(
+                $helpRequest,
+                $request->action,
+                $request->note
+            );
+        });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'You have successfully responded to the help request.',
+        ]);
     }
 }
