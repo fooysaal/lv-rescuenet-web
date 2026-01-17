@@ -31,4 +31,9 @@ class UserHelpRequest extends Model
     {
         return $this->hasMany(UserHelpRequestLog::class, 'help_request_id');
     }
+
+    public function flagReports()
+    {
+        return $this->hasMany(UserRequestFlagReport::class, 'user_help_request_id');
+    }
 }

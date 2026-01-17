@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\RegistrationController;
 use App\Http\Controllers\Api\AuthenticationController;
 use App\Http\Controllers\Api\DeviceTokenController;
 use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\UserRequestFlagReportController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -48,6 +49,9 @@ Route::prefix('v1')->group(function () {
         // Additional authenticated routes can be added here
         Route::apiResource('help-requests', HelpRequestsController::class)->except(['create', 'edit']);
         Route::post('help-requests/{help_request}/respond', [HelpRequestsController::class, 'responds']);
+
+        // Flag report routes
+        Route::post('flag-reports', [UserRequestFlagReportController::class, 'store']);
 
         // Device token management routes
         Route::apiResource('device-tokens', DeviceTokenController::class)->except(['create', 'edit']);
