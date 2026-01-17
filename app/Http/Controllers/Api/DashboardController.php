@@ -48,11 +48,11 @@ class DashboardController extends Controller
             ->when($userRole === 'fire fighter', function ($query) {
                 return $query->where('type', 'Fire');
             })
-            ->when($userRole === 'ambulance service', function ($query) {
-                return $query->whereIn('type', ['Ambulance', 'Medical']);
-            })
-            ->when(!in_array($userRole, ['police', 'fire fighter', 'ambulance service']), function ($query) {
-                return $query->whereNotIn('type', ['Police', 'Fire', 'Ambulance', 'Medical']);
+            // ->when($userRole === 'ambulance service', function ($query) {
+            //     return $query->whereIn('type', ['Ambulance', 'Medical']);
+            // })
+            ->when(!in_array($userRole, ['police', 'fire fighter']), function ($query) {
+                return $query->whereNotIn('type', ['Police', 'Fire']);
             })
             ->orderBy('distance', 'asc')       // closest first
             ->orderBy('created_at', 'desc')    // newest first
