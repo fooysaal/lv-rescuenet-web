@@ -4,11 +4,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserInfoController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\DeviceTokenController;
+use App\Http\Controllers\Api\MoreServiceController;
 use App\Http\Controllers\Api\HelpRequestsController;
+use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\RegistrationController;
 use App\Http\Controllers\Api\AuthenticationController;
-use App\Http\Controllers\Api\DeviceTokenController;
-use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\UserRequestFlagReportController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -49,6 +51,9 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('help-requests', HelpRequestsController::class)->except(['create', 'edit']);
         Route::post('help-requests/{help_request}/respond', [HelpRequestsController::class, 'responds']);
 
+        // Flag report routes
+        Route::post('flag-reports', [UserRequestFlagReportController::class, 'store']);
+
         // Device token management routes
         Route::apiResource('device-tokens', DeviceTokenController::class)->except(['create', 'edit']);
         Route::post('device-tokens/deactivate', [DeviceTokenController::class, 'deactivate']);
@@ -61,5 +66,13 @@ Route::prefix('v1')->group(function () {
         Route::get('notifications/{id}', [NotificationController::class, 'show']);
         Route::post('notifications/{id}/mark-read', [NotificationController::class, 'markAsRead']);
         Route::delete('notifications/{id}', [NotificationController::class, 'destroy']);
+
+        // More Service routes
+        Route::controller(MoreServiceController::class)->prefix('more-service')->group(function () {
+            Route::get('/emergency-contacts', 'emergencyContacts');
+            Route::post('/emergency-contacts', 'addEmergencyContact');
+            Route::delete('/emergency-contacts/{id}', 'deleteEmergencyContact');
+            Route::get('/nearby-volunteers', 'nearByVolunteers');
+        });
     });
 });

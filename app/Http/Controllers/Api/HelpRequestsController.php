@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\UserHelpRequest;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DetailHelpRequestsResource;
 use App\Services\NotificationService;
 use App\Http\Resources\HelpRequestsResource;
 
@@ -92,11 +93,11 @@ class HelpRequestsController extends Controller
      */
     public function show(string $id)
     {
-        $helpRequest = UserHelpRequest::with('files', 'user', 'requestLogs')->findOrFail($id);
+        $helpRequest = UserHelpRequest::with('files', 'user', 'requestLogs', 'flagReports')->findOrFail($id);
 
         return response()->json([
             'success' => true,
-            'data' => new HelpRequestsResource($helpRequest),
+            'data' => new DetailHelpRequestsResource($helpRequest),
             'message' => 'Help request retrieved successfully',
         ]);
     }
@@ -163,18 +164,54 @@ class HelpRequestsController extends Controller
             'note' => 'nullable|string',
         ]);
 
-        DB::transaction(function () use ($request, $id) {
-            $user = auth()->user();
+        $user = auth()->user();
+        $helpRequest = UserHelpRequest::findOrFail($id);
 
-            $helpRequest = UserHelpRequest::findOrFail($id);
+        if ($helpRequest->status !== 'pending') {
+            return response()->json([
+                'success' => false,
+                'message' => 'This help request has already been responded to.',
+            ], 400);
+        }
 
-            if ($helpRequest->status !== 'pending') {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'This help request has already been responded to.',
-                ], 400);
-            }
+        // Check if user has already responded with 'completed' action
+        $userCompletedResponse = $helpRequest->requestLogs()
+            ->where('performed_by', $user->id)
+            ->where('action', 'completed')
+            ->exists();
 
+        if ($userCompletedResponse) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You have already completed your response to this help request.',
+            ], 400);
+        }
+
+        // Get count of unique users who have responded (excluding those with 'completed' action)
+        $uniqueRespondersCount = $helpRequest->requestLogs()
+            ->whereNotIn('performed_by', function ($query) use ($helpRequest) {
+                $query->select('performed_by')
+                    ->from('request_logs')
+                    ->where('user_help_request_id', $helpRequest->id)
+                    ->where('action', 'completed');
+            })
+            ->distinct('performed_by')
+            ->count('performed_by');
+
+        // Check if user has already responded (and hasn't completed)
+        $userHasResponded = $helpRequest->requestLogs()
+            ->where('performed_by', $user->id)
+            ->exists();
+
+        // If 2 users have already responded and current user is not one of them, reject
+        if ($uniqueRespondersCount >= 2 && !$userHasResponded) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Maximum of 2 responders has been reached for this help request.',
+            ], 400);
+        }
+
+        DB::transaction(function () use ($request, $id, $user, $helpRequest) {
             // Log the response action
             $helpRequest->requestLogs()->create([
                 'performed_by' => $user->id,

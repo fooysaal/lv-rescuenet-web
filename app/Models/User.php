@@ -143,4 +143,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Notification::class);
     }
+
+    public function flagReports()
+    {
+        return $this->hasMany(UserRequestFlagReport::class, 'reported_by_user_id');
+    }
 }
