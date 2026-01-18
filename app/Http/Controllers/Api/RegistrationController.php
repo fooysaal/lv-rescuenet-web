@@ -314,4 +314,37 @@ class RegistrationController extends Controller
             ],
         ], 200);
     }
+
+    public function completeRegistration(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'latitude' => 'required',
+            'longitude' => 'required',
+            'location' => 'required|string',
+        ]);
+
+        $user = User::find($request->user_id);
+
+        // Update location information
+        $userInfo = $user->userInfo;
+        $userInfo->latitude = $request->latitude;
+        $userInfo->longitude = $request->longitude;
+        $userInfo->location_name = $request->location;
+        $userInfo->location_updated_at = now();
+        $userInfo->update();
+
+        // update user
+        $user->registration_status = 'completed';
+        $user->current_registration_step = 3;
+        $user->registration_completed_at = now();
+        $user->registration_token = null; // Clear token after completion
+        $user->registration_token_expires_at = null;
+        $user->update();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Registration completed successfully',
+        ], 200);
+    }
 }

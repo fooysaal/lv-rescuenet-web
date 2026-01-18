@@ -37,6 +37,7 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::middleware('auth:sanctum')->group(function () {
+        Route::put('/complete-registration', [RegistrationController::class, 'completeRegistration']);
         Route::controller(UserInfoController::class)->group(function () {
             Route::get('/profile', 'profile');
             Route::put('/profile', 'updateProfile');

@@ -68,4 +68,9 @@ class UserInfo extends Model
     {
         return !empty($this->nid_front_image) && !empty($this->selfie_with_nid_image);
     }
+
+    public function hasLocationInfo(): bool
+    {
+        return !empty($this->latitude) && !empty($this->longitude) && !empty($this->location_name);
+    }
 }

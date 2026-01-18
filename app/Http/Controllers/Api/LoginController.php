@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Api\BaseController;
+use App\Models\UserInfo;
 use Illuminate\Http\JsonResponse as JsonResponse;
 
 class LoginController extends BaseController
@@ -32,6 +33,7 @@ class LoginController extends BaseController
         return response()->json([
             'message' => 'User logged in successfully',
             'user' => new UserResource($user),
+            'hasLocationInfo' => $user->userInfo ? $user->userInfo->hasLocationInfo() : false,
             'token' => $user->createToken('auth_token')->plainTextToken,
         ]);
     }
