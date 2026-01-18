@@ -2,13 +2,59 @@
 
 # RescueNet Web Backend
 
-Emergency response and rescue coordination platform backend built with Laravel 12.
+A comprehensive emergency response and rescue coordination platform backend built with Laravel 12. RescueNet connects people in distress with nearby rescue teams and emergency responders, facilitating rapid response through real-time communication and location-based services.
 
 ---
 
-## 🔔 Push Notifications (FCM)
+## 🚨 About RescueNet
 
-This project includes a complete Firebase Cloud Messaging (FCM) integration for push notifications.
+RescueNet is designed to streamline emergency response operations by providing a centralized platform for:
+
+- **Emergency Help Requests**: Users can submit urgent help requests with location data, attachments, and detailed information
+- **Organization & Team Management**: Emergency response organizations can manage multiple teams and coordinate resources effectively
+- **Real-time Notifications**: Instant push notifications keep responders informed of new emergencies and updates
+- **Geographic Coordination**: Location-based services help dispatch the nearest available teams
+- **Request Tracking**: Complete lifecycle management of help requests from submission to resolution
+- **Emergency Contacts**: Users can maintain emergency contact information for rapid communication
+
+---
+
+## ✨ Core Features
+
+### Emergency Management
+
+- 📍 Location-based help request submission
+- 📎 Support for multimedia attachments (photos, videos, documents)
+- 🔄 Real-time request status tracking and logging
+- 🚩 Request flagging and reporting system
+- 📊 Request history and analytics
+
+### Organization & Team Coordination
+
+- 🏢 Multi-organization support with role-based access
+- 👥 Team creation and member management
+- 👤 User assignment to organizations and teams
+- 📋 Customizable user profiles with emergency information
+
+### Communication & Notifications
+
+- 🔔 Push notifications via Firebase Cloud Messaging (FCM)
+- 📱 Multi-device notification support
+- ✉️ In-app notification management
+- ✅ Read/unread status tracking
+- 🔄 Automatic device token management
+
+### Location Services
+
+- 🌍 Support for countries, states/divisions, and districts
+- 📍 Geographic-based team and request matching
+- 🗺️ Location data integration for help requests
+
+---
+
+## 🔔 Push Notifications Setup
+
+This project includes complete Firebase Cloud Messaging (FCM) integration for real-time notifications.
 
 ### Quick Setup
 
@@ -16,71 +62,137 @@ This project includes a complete Firebase Cloud Messaging (FCM) integration for 
 
 ### Documentation
 
--   📚 **[FIREBASE_SETUP.md](FIREBASE_SETUP.md)** - Complete Firebase & Flutter setup guide
--   📖 **[PUSH_NOTIFICATION_API.md](PUSH_NOTIFICATION_API.md)** - API reference with examples
--   📝 **[IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)** - What was implemented
--   💻 **[flutter_notification_service.dart](flutter_notification_service.dart)** - Flutter service sample
+- 📚 **[FIREBASE_SETUP.md](FIREBASE_SETUP.md)** - Complete Firebase & Flutter setup guide
+- 📖 **[PUSH_NOTIFICATION_API.md](PUSH_NOTIFICATION_API.md)** - API reference with examples
+- 📝 **[IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)** - Implementation details
+- 💻 **[flutter_notification_service.dart](flutter_notification_service.dart)** - Flutter integration sample
 
-### Features
+### Notification Features
 
--   ✅ Multi-device push notifications via FCM
--   ✅ Real-time help request response notifications
--   ✅ In-app notification management
--   ✅ Automatic token refresh handling
--   ✅ Invalid token cleanup
--   ✅ Read/unread status tracking
+- ✅ Multi-device push notifications via FCM
+- ✅ Real-time help request response notifications
+- ✅ In-app notification management
+- ✅ Automatic token refresh handling
+- ✅ Invalid token cleanup
+- ✅ Read/unread status tracking
 
 ---
 
-## About Laravel
+## 🚀 Getting Started
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Prerequisites
 
--   [Simple, fast routing engine](https://laravel.com/docs/routing).
--   [Powerful dependency injection container](https://laravel.com/docs/container).
--   Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
--   Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
--   Database agnostic [schema migrations](https://laravel.com/docs/migrations).
--   [Robust background job processing](https://laravel.com/docs/queues).
--   [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- PHP >= 8.2
+- Composer
+- MySQL/MariaDB
+- Node.js & NPM
+- Firebase account (for push notifications)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Installation
 
-## Learning Laravel
+1. Clone the repository
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```bash
+git clone https://github.com/fooysaal/lv-rescuenet-web.git
+cd lv-rescuenet-web
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+2. Install dependencies
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+composer install
+npm install
+```
 
-## Laravel Sponsors
+3. Configure environment
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-### Premium Partners
+4. Set up database
 
--   **[Vehikl](https://vehikl.com)**
--   **[Tighten Co.](https://tighten.co)**
--   **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
--   **[64 Robots](https://64robots.com)**
--   **[Curotec](https://www.curotec.com/services/technologies/laravel)**
--   **[DevSquad](https://devsquad.com/hire-laravel-developers)**
--   **[Redberry](https://redberry.international/laravel-development)**
--   **[Active Logic](https://activelogic.com)**
+```bash
+php artisan migrate --seed
+```
 
-## Contributing
+5. Build assets
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+npm run build
+```
 
-## Code of Conduct
+6. Start the development server
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+php artisan serve
+```
 
-## Security Vulnerabilities
+For detailed Docker setup instructions, see [DOCKER.md](DOCKER.md).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 📚 API Documentation
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+The API follows RESTful principles and uses Laravel Sanctum for authentication. Test the endpoints using the included Postman collection:
+
+- **[postman_collection.json](postman_collection.json)** - Complete API collection
+
+### Key API Endpoints
+
+- `/api/auth/*` - Authentication & user registration
+- `/api/help-requests/*` - Emergency help request management
+- `/api/organizations/*` - Organization management
+- `/api/teams/*` - Team management
+- `/api/notifications/*` - Notification management
+- `/api/device-tokens/*` - Device token registration for push notifications
+
+---
+
+## 🛠️ Technology Stack
+
+- **Framework**: Laravel 12
+- **Database**: MySQL/MariaDB
+- **Authentication**: Laravel Sanctum
+- **Push Notifications**: Firebase Cloud Messaging (FCM)
+- **Real-time UI**: Livewire
+- **Frontend Build**: Vite
+- **API Testing**: Postman
+- **Containerization**: Docker (optional)
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these guidelines:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+Please ensure your code follows PSR-12 coding standards and includes appropriate tests.
+
+---
+
+## 🔒 Security Vulnerabilities
+
+If you discover a security vulnerability within RescueNet, please send an email to the development team. All security vulnerabilities will be promptly addressed.
+
+**Please do not create public GitHub issues for security vulnerabilities.**
+
+## 📄 License
+
+RescueNet is open-source software. Please check with the project maintainers for licensing information.
+
+---
+
+## 🙏 Acknowledgments
+
+Built with [Laravel](https://laravel.com) - The PHP Framework for Web Artisans
+
+---
+
+**RescueNet** - Connecting help where it's needed most.
