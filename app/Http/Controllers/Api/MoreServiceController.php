@@ -24,8 +24,8 @@ class MoreServiceController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:11',
-            'relationship' => 'nullable|string|max:20',
+            'phone' => 'required|string|min:11|max:15',
+            'relationship' => 'nullable|string|max:100',
         ]);
 
         $user = auth()->user();
@@ -63,11 +63,13 @@ class MoreServiceController extends Controller
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'radius_km' => 'nullable|numeric',
+            'role' => 'nullable|string',
         ]);
 
         $lat = $request->latitude;
         $lng = $request->longitude;
         $radius = $request->radius_km ?? 1; // default 1 km
+        $role = $request->role ?? 'volunteer';
 
         // Haversine formula to find nearby volunteers
         $volunteers = UserInfo::select('*')
@@ -83,6 +85,9 @@ class MoreServiceController extends Controller
             )
             ->having('distance', '<=', $radius)
             ->orderBy('distance', 'asc')
+            ->whereHas('user', function ($query) use ($role) {
+                $query->where('role', $role);
+            })
             ->with('user')
             ->get();
 
