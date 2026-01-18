@@ -9,7 +9,7 @@ use App\Http\Controllers\Api\MoreServiceController;
 use App\Http\Controllers\Api\HelpRequestsController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\RegistrationController;
-use App\Http\Controllers\Api\AuthenticationController;
+use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\UserRequestFlagReportController;
 
 // Route::get('/user', function (Request $request) {
@@ -31,9 +31,8 @@ Route::prefix('v1')->group(function () {
     });
 
     // Legacy authentication routes
-    Route::controller(AuthenticationController::class)->group(function () {
+    Route::controller(LoginController::class)->group(function () {
         Route::post('/login', 'login');
-        // Route::post('/register', 'register');
         Route::post('/logout', 'logout')->middleware('auth:sanctum');
     });
 
