@@ -9,7 +9,7 @@ use App\Http\Controllers\Api\MoreServiceController;
 use App\Http\Controllers\Api\HelpRequestsController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\RegistrationController;
-use App\Http\Controllers\Api\AuthenticationController;
+use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\UserRequestFlagReportController;
 
 // Route::get('/user', function (Request $request) {
@@ -31,13 +31,13 @@ Route::prefix('v1')->group(function () {
     });
 
     // Legacy authentication routes
-    Route::controller(AuthenticationController::class)->group(function () {
+    Route::controller(LoginController::class)->group(function () {
         Route::post('/login', 'login');
-        // Route::post('/register', 'register');
         Route::post('/logout', 'logout')->middleware('auth:sanctum');
     });
 
     Route::middleware('auth:sanctum')->group(function () {
+        Route::put('/complete-registration', [RegistrationController::class, 'completeRegistration']);
         Route::controller(UserInfoController::class)->group(function () {
             Route::get('/profile', 'profile');
             Route::put('/profile', 'updateProfile');
@@ -69,6 +69,7 @@ Route::prefix('v1')->group(function () {
 
         // More Service routes
         Route::controller(MoreServiceController::class)->prefix('more-service')->group(function () {
+            Route::get('user/{user_id}/overview', 'userOverview');
             Route::get('/emergency-contacts', 'emergencyContacts');
             Route::post('/emergency-contacts', 'addEmergencyContact');
             Route::delete('/emergency-contacts/{id}', 'deleteEmergencyContact');
