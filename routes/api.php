@@ -69,6 +69,7 @@ Route::prefix('v1')->group(function () {
 
         // More Service routes
         Route::controller(MoreServiceController::class)->prefix('more-service')->group(function () {
+            Route::get('user/{user_id}/overview', 'userOverview');
             Route::get('/emergency-contacts', 'emergencyContacts');
             Route::post('/emergency-contacts', 'addEmergencyContact');
             Route::delete('/emergency-contacts/{id}', 'deleteEmergencyContact');
