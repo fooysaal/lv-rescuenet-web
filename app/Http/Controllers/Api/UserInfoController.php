@@ -71,6 +71,7 @@ class UserInfoController extends BaseController
 
         if (!empty($uploadedFiles)) {
             $userInfo->nid_verification_status = 'verified';
+            $userInfo->nid_verified_at = now();
             // update user role to volunteer
             $user->role = 'volunteer';
             $user->update();

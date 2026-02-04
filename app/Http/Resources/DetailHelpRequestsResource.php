@@ -17,6 +17,7 @@ class DetailHelpRequestsResource extends JsonResource
         return [
             'id' => $this->id,
             'requested_user' => [
+                'id' => $this->user->id,
                 'name' => $this->user->name,
                 'phone' => $this->user->phone,
             ],

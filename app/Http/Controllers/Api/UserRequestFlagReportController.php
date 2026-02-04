@@ -19,20 +19,12 @@ class UserRequestFlagReportController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'request_id' => 'required|exists:user_help_requests,id',
             'report_type' => 'required|in:Invalid Location,Unclear Request,Other',
             'report_reason' => 'required|string|max:1000',
             'report_attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120', // 5MB max
         ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation failed',
-                'errors' => $validator->errors()
-            ], 422);
-        }
 
         $userId = auth()->id();
         $helpRequestId = $request->request_id;

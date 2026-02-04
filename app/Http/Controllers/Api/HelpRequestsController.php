@@ -191,8 +191,8 @@ class HelpRequestsController extends Controller
         $uniqueRespondersCount = $helpRequest->requestLogs()
             ->whereNotIn('performed_by', function ($query) use ($helpRequest) {
                 $query->select('performed_by')
-                    ->from('request_logs')
-                    ->where('user_help_request_id', $helpRequest->id)
+                    ->from('user_help_request_logs')
+                    ->where('help_request_id', $helpRequest->id)
                     ->where('action', 'completed');
             })
             ->distinct('performed_by')
